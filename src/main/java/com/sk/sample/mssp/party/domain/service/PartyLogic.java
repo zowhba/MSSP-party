@@ -10,57 +10,56 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sk.sample.mssp.party.domain.model.Party;
+import com.sk.sample.mssp.party.domain.model.PartyMember;
+import com.sk.sample.mssp.party.domain.repository.PartyMemberRepository;
 import com.sk.sample.mssp.party.domain.repository.PartyRepository;
 
-@Service("accountLogic")
+@Service("partyLogic")
 public class PartyLogic implements PartyService {
 	@Autowired
-	private PartyRepository accountRepository;
+	private PartyRepository partyRepository;
 
-	@Override
-	@Transactional(readOnly=true)
-	public Party findById(Long id) {
-		return accountRepository.findOne(id);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public List<Party> findByNameLike(String name) {
-		return accountRepository.findByNameLike(name);
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public Party findByEmail(String email) {
-		return accountRepository.findByEmail(email);
-	}
+	@Autowired
+	private PartyMemberRepository partyMemberRepository;
 	
 	@Override
 	@Transactional(readOnly=true)
+	public Party findById(Long id) {
+		return partyRepository.findOne(id);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
 	public List<Party> findAll() {
-		return accountRepository.findAll();
+		return partyRepository.findAll();
 	}
 
 	
 	@Override
 	@Transactional(readOnly=true)
 	public Page<Party> findAll(Pageable pageable) {
-		return accountRepository.findAll(pageable);
+		return partyRepository.findAll(pageable);
 	}
 
 	@Override
 	@Transactional
-	public Party register(Party account) {
-		return accountRepository.save(account);
+	public Party register(Party party) {
+		return partyRepository.save(party);
 	}
 
+	@Override
+	@Transactional
+	public PartyMember join(PartyMember partyMember) {
+		return partyMemberRepository.save(partyMember);
+	}
+	
 	@Override
 	@Transactional
 	public Party update(Long id, Party newAccount) {
-		Party oldAccount = accountRepository.findOne(id);
+		Party oldAccount = partyRepository.findOne(id);
 		if(oldAccount != null) {
 			BeanUtils.copyProperties(newAccount,  oldAccount, "id");
-			return accountRepository.save(oldAccount);
+			return partyRepository.save(oldAccount);
 		} else {
 			return null;
 		}
@@ -69,6 +68,6 @@ public class PartyLogic implements PartyService {
 	@Override
 	@Transactional
 	public void delete(Long id) {
-		accountRepository.delete(id);
+		partyRepository.delete(id);
 	}
 }

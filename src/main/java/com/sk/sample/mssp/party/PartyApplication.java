@@ -1,5 +1,7 @@
 package com.sk.sample.mssp.party;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -8,10 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.querydsl.core.types.Predicate;
-import com.sk.sample.mssp.party.domain.model.MemberType;
-import com.sk.sample.mssp.party.domain.model.MembershipLevelType;
 import com.sk.sample.mssp.party.domain.model.Party;
+import com.sk.sample.mssp.party.domain.model.PartyMember;
 import com.sk.sample.mssp.party.domain.model.QParty;
+import com.sk.sample.mssp.party.domain.repository.PartyMemberRepository;
 import com.sk.sample.mssp.party.domain.repository.PartyRepository;
 import com.sk.sample.mssp.shared.domain.Address;
 
@@ -22,105 +24,119 @@ public class PartyApplication {
 	}
 
 	@Bean
-	public CommandLineRunner execSampleCode(PartyRepository accountRepository) {	
+	public CommandLineRunner execSampleCode(PartyRepository partyRepository, PartyMemberRepository partyMemberRepository) {	
 		return (args) -> {
-			insertAccounts(accountRepository);
-			displayAccounts(accountRepository);
+			insertParty(partyRepository, partyMemberRepository);
+			displayParty(partyRepository);
+			displayPartyMember(partyMemberRepository);
 			
-			executeExample1(accountRepository);
+			//executeExample1(partyRepository);
 		};
 	}
 		
-	public void insertAccounts(PartyRepository accountRepository) {
+	public void insertParty(PartyRepository partyRepository, PartyMemberRepository partyMemberRepository) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MONTH, 3);
 		
-		Party account1 = new Party("hong@sk.com", "홍길동", MemberType.BUYER);
-		accountRepository.save(account1);
+		Party party1 = new Party("NetFlix 3개월 구독방", "kdHong", 3L, new Date(), cal.getTime());
+		partyRepository.save(party1);
 		
-		Party account2 = new Party("kang@sk.com", "강호동", MemberType.BUYER, MembershipLevelType.VIP);
-		account2.setAddress(new Address(12345, "서울시 강남구"));
-		accountRepository.save(account2);
+		Party party2 = new Party("Watcha 6개월 구독방", "hdKang", 5L, new Date(), cal.getTime());
+		partyRepository.save(party2);
 		
-		Party account3 = new Party("yu@gmail.com", "유재석", MemberType.SELLER);
-		account3.setAddress(new Address(10000, "경기도 성남시"));
-		accountRepository.save(account3);
+		PartyMember partyMember = new PartyMember(party1.getId(), "gcKang");
+		partyMemberRepository.save(partyMember);
 		
-		Party account4 = new Party("shin@sk.com", "신동엽", MemberType.BUYER, MembershipLevelType.GOLD);
-		account4.setAddress(new Address(12345, "서울시 강남구"));
-		accountRepository.save(account4);
+		PartyMember partyMember2 = new PartyMember(party1.getId(), "jhSung");
+		partyMemberRepository.save(partyMember2);
+		
+		PartyMember partyMember3 = new PartyMember(party2.getId(), "jhSung");
+		partyMemberRepository.save(partyMember3);
 	}
 	
-	public void displayAccounts(PartyRepository accountRepository) {
+	public void displayParty(PartyRepository partyRepository) {
 		System.out.println("***************************************************************");
 		
-		Iterable<Party> accountList = accountRepository.findAll();
-		for(Party account : accountList) {
-			System.out.println(account.toString());	
+		Iterable<Party> partyList = partyRepository.findAll();
+		for(Party party : partyList) {
+			System.out.println(party.toString());	
 		}
 		
 		System.out.println("***************************************************************");
 	}
 	
-	
-	public void executeExample1(PartyRepository accountRepository) {
-		Party account = accountRepository.findByEmail("hong@sk.com");
+	public void displayPartyMember(PartyMemberRepository partyMemberRepository) {
+		System.out.println("***************************************************************");
 		
-		account.setAddress(Address.builder().zipCode(10000).homeAddress("경기도 성남시").build());
-		accountRepository.save(account);
+		Iterable<PartyMember> partyMemberList = partyMemberRepository.findAll();
+		for(PartyMember partyMember : partyMemberList) {
+			System.out.println(partyMember.toString());	
+		}
 		
-		displayAccounts(accountRepository);
+		System.out.println("***************************************************************");
 	}
 	
-	public void executeExample2(PartyRepository accountRepository) {
-		List<Party> account = accountRepository.findByAddressZipCode(12345);
-		System.out.println("Result: " + account.toString());
+	/*public void executeExample1(PartyRepository partyRepository) {
+		Party party = partyRepository.findByEmail("hong@sk.com");
+		
+		party.setAddress(Address.builder().zipCode(10000).homeAddress("경기도 성남시").build());
+		partyRepository.save(party);
+		
+		displayParty(partyRepository);
 	}
 	
-	public void executeExample3(PartyRepository accountRepository) {
-		List<Party> account = accountRepository.findByAddressHomeAddressLike("성남");
-		System.out.println("Result: " + account.toString());
+	public void executeExample2(PartyRepository partyRepository) {
+		List<Party> party = partyRepository.findByAddressZipCode(12345);
+		System.out.println("Result: " + party.toString());
 	}
 	
-	public void executeExample4(PartyRepository accountRepository) {
+	public void executeExample3(PartyRepository partyRepository) {
+		List<Party> party = partyRepository.findByAddressHomeAddressLike("성남");
+		System.out.println("Result: " + party.toString());
+	}
+	
+	public void executeExample4(PartyRepository partyRepository) {
 		QParty.party.name.like("강%");
-		Party account = accountRepository.findOne(QParty.party.email.eq("hong@sk.com"));
+		Party party = partyRepository.findOne(QParty.party.email.eq("hong@sk.com"));
 		
-		account.setAddress(Address.builder().zipCode(10000).homeAddress("경기도 성남시").build());
-		accountRepository.save(account);
+		party.setAddress(Address.builder().zipCode(10000).homeAddress("경기도 성남시").build());
+		partyRepository.save(party);
 		
-		displayAccounts(accountRepository);
+		displayParty(partyRepository);
 	}
 	
-	public void executeExample5(PartyRepository accountRepository) {
-		List<Party> account = accountRepository.findAll(QParty.party.address.zipCode.eq(12345));
-		System.out.println("Result: " + account.toString());
+	public void executeExample5(PartyRepository partyRepository) {
+		List<Party> party = partyRepository.findAll(QParty.party.address.zipCode.eq(12345));
+		System.out.println("Result: " + party.toString());
 	}
 	
-	public void executeExample6(PartyRepository accountRepository) {
-		List<Party> account = accountRepository.findAll(QParty.party.address.homeAddress.like("성남"));
-		System.out.println("Result: " + account.toString());
+	public void executeExample6(PartyRepository partyRepository) {
+		List<Party> party = partyRepository.findAll(QParty.party.address.homeAddress.like("성남"));
+		System.out.println("Result: " + party.toString());
 	}
 	
-	public void executeExample7(PartyRepository accountRepository) {
+	public void executeExample7(PartyRepository partyRepository) {
 		Predicate predicate = QParty.party.memberType.eq(MemberType.BUYER).and(
 				              QParty.party.membershipLevelType.eq(MembershipLevelType.VIP));
-		List<Party> account = accountRepository.findAll(predicate);
-		System.out.println("Result: " + account.toString());
-	}
+		List<Party> party = partyRepository.findAll(predicate);
+		System.out.println("Result: " + party.toString());
+	}*/
 	
 	/*
 	@Bean
-	public CommandLineRunner execSampleCode2(@Qualifier("accountLogic") AccountService accountService) {
+	public CommandLineRunner execSampleCode2(@Qualifier("partyLogic") AccountService partyService) {
 		return (args) -> {
-			Account account = new Account("iu@sk.com", "아이유", MemberType.BUYER, MembershipLevelType.VIP);
-			accountService.register(account);
+			Account party = new Account("iu@sk.com", "아이유", MemberType.BUYER, MembershipLevelType.VIP);
+			partyService.register(party);
 			
-			Account result = accountService.findByEmail("iu@sk.com");
+			Account result = partyService.findByEmail("iu@sk.com");
 			System.out.println("Component API Result - " + result);
 			
 			result.setAddress(new Address(11111, "서울시 영등포구"));
-			accountService.update(result.getId(), result);
+			partyService.update(result.getId(), result);
 			
-			Account result2 = accountService.findByEmail("iu@sk.com");
+			Account result2 = partyService.findByEmail("iu@sk.com");
 			System.out.println("Component API Result2 - " + result2);
 		};
 	}

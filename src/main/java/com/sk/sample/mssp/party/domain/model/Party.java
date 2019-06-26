@@ -1,12 +1,13 @@
 package com.sk.sample.mssp.party.domain.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.sk.sample.mssp.shared.base.AbstractEntity;
 import com.sk.sample.mssp.shared.base.AggregateRoot;
-import com.sk.sample.mssp.shared.domain.Address;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,26 +16,26 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Party extends AbstractEntity implements AggregateRoot {
-	private String email;
 	private String name;
-	
-	@Enumerated(EnumType.ORDINAL)
-	private MemberType memberType;
+	private String leaderId;
+	private Long numberOfMember;
+	private Date startDate;
+	private Date expireDate;
 	
 	@Enumerated(EnumType.STRING)
-	private MembershipLevelType membershipLevelType;
+	private PartyStatusType partyStatusType;
 	
-	private Address address;
-	
-	public Party(String email, String name, MemberType memberType) {
-		this(email, name, memberType, MembershipLevelType.SILVER);
+	public Party(String name, String leaderId, Long numberOfMember, Date startDate, Date expireDate) {
+		this(name, leaderId, numberOfMember, startDate, expireDate, PartyStatusType.OPEN);
 	}
 	
-	public Party(String email, String name, MemberType memberType, MembershipLevelType membershipLevelType) {
-		this.email = email;
+	public Party(String name, String leaderId, Long numberOfMember, Date startDate, Date expireDate, PartyStatusType partyStatusType) {
 		this.name = name;
-		this.memberType = memberType;
-		this.membershipLevelType = membershipLevelType;
+		this.leaderId = leaderId;
+		this.numberOfMember = numberOfMember;
+		this.startDate = startDate;
+		this.expireDate = expireDate;
+		this.partyStatusType = partyStatusType;
 
 	}
 }
