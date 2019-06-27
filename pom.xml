@@ -88,8 +88,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring-boot.version}</version>
 			</plugin>
-			
-			
 			<plugin>
 				<groupId>com.querydsl</groupId>
 				<artifactId>querydsl-maven-plugin</artifactId>
@@ -109,7 +107,18 @@
 					</execution>
 				</executions>
 			</plugin>
-
+            <plugin>
+			    <groupId>org.springframework.boot</groupId>
+			    <artifactId>spring-boot-maven-plugin</artifactId>
+			    <version>1.2.5.RELEASE</version>
+			    <executions>
+				<execution>
+				    <goals>
+					<goal>repackage</goal>
+				    </goals>
+				</execution>
+			    </executions>
+			</plugin>
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>

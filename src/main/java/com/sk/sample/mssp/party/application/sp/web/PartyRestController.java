@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sk.sample.mssp.party.application.proxy.dto.account.Account;
+import com.sk.sample.mssp.party.application.proxy.feign.AccountProxy;
 import com.sk.sample.mssp.party.domain.model.Party;
 import com.sk.sample.mssp.party.domain.model.PartyMember;
 import com.sk.sample.mssp.party.domain.service.PartyService;
@@ -23,7 +25,10 @@ import com.sk.sample.mssp.party.domain.service.PartyService;
 public class PartyRestController implements PartyService {
 	@Autowired
 	private PartyService partyService;
-
+	
+	//@Autowired
+	//private AccountProxy accountProxy;
+	
 	@Override
 	@GetMapping
 	public List<Party> findAll() {
@@ -45,6 +50,8 @@ public class PartyRestController implements PartyService {
 	@Override
 	@PostMapping("/join")
 	public PartyMember join(@RequestBody PartyMember partyMember) {
+		//Account account = accountProxy.findAccounByUserId(partyMember.getUserId());
+		//System.out.println("Buyer: " + account.toString());
 		return partyService.join(partyMember);
 	}
 
