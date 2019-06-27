@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import com.sk.sample.mssp.shared.base.AbstractEntity;
 import com.sk.sample.mssp.shared.base.AggregateRoot;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,6 +17,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 @Entity
 public class Party extends AbstractEntity implements AggregateRoot {
+	@ApiModelProperty(required = true, value = "파리명")
 	private String name;
 	private String leaderId;
 	private Long numberOfMember;
