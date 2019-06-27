@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sk.sample.mssp.party.application.proxy.dto.account.Account;
+import com.sk.sample.mssp.party.application.proxy.dto.account.Member;
 import com.sk.sample.mssp.party.application.proxy.feign.AccountProxy;
 import com.sk.sample.mssp.party.domain.model.Party;
 import com.sk.sample.mssp.party.domain.model.PartyMember;
@@ -54,7 +54,7 @@ public class PartyRestController implements PartyService {
 	@ApiOperation(value = "파티 가입")
 	@PostMapping("/join")
 	public PartyMember join(@RequestBody PartyMember partyMember) {
-		Account account = accountProxy.findAccounByUserId(partyMember.getUserId());
+		Member account = accountProxy.findAccounByUserId(partyMember.getUserId());
 		PartyMember result = null;
 		if (account != null) {
 			result = partyService.join(partyMember);

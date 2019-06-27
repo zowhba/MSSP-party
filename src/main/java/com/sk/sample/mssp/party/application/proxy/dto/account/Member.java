@@ -14,27 +14,26 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=true)
 @Entity
-public class Account extends AbstractEntity implements AggregateRoot {
+public class Member extends AbstractEntity implements AggregateRoot {
 	private String email;
 	private String name;
+	
+	private String userId;
+	private String password;
+	private String telephone;
+	
 	
 	@Enumerated(EnumType.ORDINAL)
 	private MemberType memberType;
 	
-	@Enumerated(EnumType.STRING)
-	private MembershipLevelType membershipLevelType;
-	
 	private Address address;
-	
-	public Account(String email, String name, MemberType memberType) {
-		this(email, name, memberType, MembershipLevelType.SILVER);
-	}
-	
-	public Account(String email, String name, MemberType memberType, MembershipLevelType membershipLevelType) {
+		
+	public Member(String userId, String password, String email, String name, String telephone) {
+		this.name=name;
 		this.email = email;
-		this.name = name;
-		this.memberType = memberType;
-		this.membershipLevelType = membershipLevelType;
+		this.telephone = telephone;
+		this.userId=userId;
+		this.password=password;
 
 	}
 }

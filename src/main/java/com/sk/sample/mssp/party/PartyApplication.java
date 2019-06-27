@@ -3,12 +3,15 @@ package com.sk.sample.mssp.party;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
+import com.sk.sample.mssp.party.application.proxy.dto.account.Member;
+import com.sk.sample.mssp.party.application.proxy.feign.AccountProxy;
 import com.sk.sample.mssp.party.domain.model.Party;
 import com.sk.sample.mssp.party.domain.model.PartyMember;
 import com.sk.sample.mssp.party.domain.repository.PartyMemberRepository;
@@ -17,6 +20,10 @@ import com.sk.sample.mssp.party.domain.repository.PartyRepository;
 @EnableFeignClients
 @SpringBootApplication
 public class PartyApplication {
+
+	@Autowired
+	private AccountProxy accountProxy;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(PartyApplication.class, args);
 	}
@@ -49,8 +56,22 @@ public class PartyApplication {
 		PartyMember partyMember2 = new PartyMember(party1.getId(), "jhSung");
 		partyMemberRepository.save(partyMember2);
 		
-		PartyMember partyMember3 = new PartyMember(party2.getId(), "jhSung");
-		partyMemberRepository.save(partyMember3);
+		PartyMember partyMember3 = new PartyMember(party2.getId(), "abc123");
+		
+		try {
+			Member account = accountProxy.findAccounByUserId(partyMember3.getUserId());
+			PartyMember result = null;
+			if (account != null) {
+				System.out.println("Buyer: " + account.toString());
+				partyMemberRepository.save(partyMember3);
+				
+			} else {
+				System.out.println("Not founded");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
 	}
 	
 	public void displayParty(PartyRepository partyRepository) {
