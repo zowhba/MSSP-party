@@ -16,40 +16,40 @@ import com.sk.sample.mssp.party.application.proxy.dto.account.Account;
 
 @Service
 public class AccountProxy {
-	/*
-	 * @Autowired private AccountClient accountClient;
-	 * 
-	 * public Account findAccount(Long id) { return
-	 * accountClient.findAccount(id).getContent(); }
-	 * 
-	 * public Collection<Account> findAllAccounts() { return
-	 * accountClient.findAllAccounts().getContent(); }
-	 * 
-	 * public Collection<Account> findAllAccounts(int size) { return
-	 * accountClient.findAllAccounts(size).getContent(); }
-	 * 
-	 * public Account findAccounByName(String name) { return
-	 * accountClient.findAccount(name); }
-	 * 
-	 * public Account findAccounByUserId(String userId) { return
-	 * accountClient.findAccountByUserId(userId); }
-	 */
 	
-	@FeignClient(name="accounts", url="http://localhost:11001", configuration=FeignClientConfiguration.class)
+	  @Autowired private AccountClient accountClient;
+	  
+	  public Account findAccount(Long id) { return
+	  accountClient.findAccount(id).getContent(); }
+	  
+	  public Collection<Account> findAllAccounts() { return
+	  accountClient.findAllAccounts().getContent(); }
+	  
+	  public Collection<Account> findAllAccounts(int size) { return
+	  accountClient.findAllAccounts(size).getContent(); }
+	  
+	  public Account findAccounByName(String name) { return
+	  accountClient.findAccount(name); }
+	  
+	  public Account findAccounByUserId(String userId) { return
+	  accountClient.findAccountByUserId(userId); }
+	 
+	
+	@FeignClient(name="members", url="http://13.124.104.113:11001", configuration=FeignClientConfiguration.class)
 	interface AccountClient {
-		@GetMapping("accounts/{id}")
+		@GetMapping("members/{id}")
 		Resource<Account> findAccount(@PathVariable("userId") Long id);
 		
-		@GetMapping("accounts")
+		@GetMapping("members")
 		Resources<Account> findAllAccounts();
 		
-		@GetMapping("accounts")
+		@GetMapping("members")
 		Resources<Account> findAllAccounts(@RequestParam("size") int size);
 		
-		@GetMapping("accounts/search/userId")
+		@GetMapping("members/search/userId")
 		Account findAccountByUserId(@RequestParam(value="userId", required=true) String userId);
 		
-		@GetMapping("accounts/search/name")
+		@GetMapping("members/search/name")
 		Account findAccount(@RequestParam(value="name", required=true) String name);
 	}
 }

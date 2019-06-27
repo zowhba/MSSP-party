@@ -2,21 +2,19 @@ package com.sk.sample.mssp.party;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
-import com.querydsl.core.types.Predicate;
 import com.sk.sample.mssp.party.domain.model.Party;
 import com.sk.sample.mssp.party.domain.model.PartyMember;
-import com.sk.sample.mssp.party.domain.model.QParty;
 import com.sk.sample.mssp.party.domain.repository.PartyMemberRepository;
 import com.sk.sample.mssp.party.domain.repository.PartyRepository;
-import com.sk.sample.mssp.shared.domain.Address;
 
+@EnableFeignClients
 @SpringBootApplication
 public class PartyApplication {
 	public static void main(String[] args) {
