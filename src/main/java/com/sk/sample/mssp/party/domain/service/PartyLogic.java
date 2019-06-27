@@ -53,21 +53,16 @@ public class PartyLogic implements PartyService {
 		return partyMemberRepository.save(partyMember);
 	}
 	
-	@Override
-	@Transactional
-	public Party update(Long id, Party newAccount) {
-		Party oldAccount = partyRepository.findOne(id);
-		if(oldAccount != null) {
-			BeanUtils.copyProperties(newAccount,  oldAccount, "id");
-			return partyRepository.save(oldAccount);
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	@Transactional
-	public void delete(Long id) {
-		partyRepository.delete(id);
-	}
+	/*
+	 * @Override
+	 * 
+	 * @Transactional public Party update(Long id, Party newAccount) { Party
+	 * oldAccount = partyRepository.findOne(id); if(oldAccount != null) {
+	 * BeanUtils.copyProperties(newAccount, oldAccount, "id"); return
+	 * partyRepository.save(oldAccount); } else { return null; } }
+	 * 
+	 * @Override
+	 * 
+	 * @Transactional public void delete(Long id) { partyRepository.delete(id); }
+	 */
 }

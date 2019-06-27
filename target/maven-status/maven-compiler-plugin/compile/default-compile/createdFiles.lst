@@ -1,4 +1,3 @@
-com\sk\sample\mssp\party\domain\model\QPartyMember.class
 com\sk\sample\mssp\party\domain\model\QParty.class
 com\sk\sample\mssp\shared\domain\QAddress.class
 com\sk\sample\mssp\party\application\proxy\dto\account\QAccount.class

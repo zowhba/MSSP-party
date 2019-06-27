@@ -14,8 +14,11 @@ public interface PartyService {
 	Page<Party> findAll(Pageable pageable);
 	
 	Party register(Party party);
-	Party update(Long id, Party party);
 
-	void delete(Long id);
+	/*
+	 * Party update(Long id, Party party);
+	 * 
+	 * void delete(Long id);
+	 */
 	PartyMember join(PartyMember partyMember);
 }
